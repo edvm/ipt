@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.4.8", features = ["derive"] }
-lopdf = { version = "0.31.0", features = ["pom", "pom_parser"] }
+pdf-extract = "0.7.2"

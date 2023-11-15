@@ -17,10 +17,8 @@ fn main() {
 
     if let Some(path) = cli.extract.as_deref() {
         match extract_text(path.to_str().unwrap()) {
-            Ok(texts) => {
-                for text in texts {
-                    println!("{}", text);
-                }
+            Ok(text) => {
+                println!("{}", text);
             },
             Err(err) => {
                 println!("Error: {}", err);
