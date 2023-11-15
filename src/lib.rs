@@ -25,7 +25,9 @@ pub fn extract_from_pdf(path: &str) -> Result<Vec<String>, String> {
 }
 
 pub fn extract_text(path: &str) -> Result<Vec<String>, String> {
+
     let path = Path::new(path);
+
     match path.extension() {
         Some(ext) => {
             match ext.to_str() {
@@ -56,5 +58,10 @@ mod tests {
     #[test]
     fn unsupported_file_extension() {
         extract_text("path/to/file.unsupported").expect_err("Unsupported file extension: unsupported");
+    }
+
+    #[test]
+    fn file_not_found() {
+        extract_text("path/to/file.pdf").expect_err("File not found: path/to/file.pdf");
     }
 }
