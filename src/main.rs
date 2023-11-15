@@ -8,15 +8,15 @@ use text_extractor::extract_text;
 struct Cli {
     /// Path to the file to extract text from 
     #[arg(short, long, value_name = "FILE")]
-    extract: Option<PathBuf>,
+    file: Option<PathBuf>,
 
 }
 
 fn main() {
     let cli = Cli::parse();
 
-    if let Some(path) = cli.extract.as_deref() {
-        match extract_text(path.to_str().unwrap()) {
+    if let Some(path) = cli.file.as_deref() {
+        match extract_text(path) {
             Ok(text) => {
                 println!("{}", text);
             },

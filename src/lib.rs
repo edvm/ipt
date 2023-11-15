@@ -5,9 +5,7 @@ pub fn extract_from_pdf(path: &str) -> String {
     pdf_extract::extract_text_from_mem(&bytes).expect("Error extracting text from PDF")
 }
 
-pub fn extract_text(path: &str) -> Result<String, String> {
-
-    let path = Path::new(path);
+pub fn extract_text(path: &Path) -> Result<String, String> {
 
     match path.extension() {
         Some(ext) => {
@@ -33,12 +31,12 @@ mod tests {
 
     #[test]
     fn no_file_extension() {
-        extract_text("path/to/file").expect_err("File has no extension: path/to/file");
+        extract_text(Path::new("path/to/file")).expect_err("File has no extension: path/to/file");
     }
 
     #[test]
     fn unsupported_file_extension() {
-        extract_text("path/to/file.unsupported").expect_err("Unsupported file extension: unsupported");
+        extract_text(Path::new("path/to/file.unsupported")).expect_err("Unsupported file extension: unsupported");
     }
 
 }
