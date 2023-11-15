@@ -43,9 +43,6 @@ pub fn extract_text(path: &str) -> Result<Vec<String>, String> {
     }
 }
 
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
 
 #[cfg(test)]
 mod tests {
@@ -54,5 +51,10 @@ mod tests {
     #[test]
     fn no_file_extension() {
         extract_text("path/to/file").expect_err("File has no extension: path/to/file");
+    }
+
+    #[test]
+    fn unsupported_file_extension() {
+        extract_text("path/to/file.unsupported").expect_err("Unsupported file extension: unsupported");
     }
 }
