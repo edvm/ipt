@@ -1,6 +1,6 @@
 use clap::Parser;
 use std::path::PathBuf;
-use text_extractor::extract_text;
+use ipt::into_plain_text;
 
 
 #[derive(Parser)]
@@ -16,7 +16,7 @@ fn main() {
     let cli = Cli::parse();
 
     if let Some(path) = cli.file.as_deref() {
-        match extract_text(path) {
+        match into_plain_text(path) {
             Ok(text) => {
                 println!("{}", text);
             },

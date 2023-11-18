@@ -1,26 +1,22 @@
 use std::path::Path;
+use anyhow::{Result, anyhow};
 
-pub fn extract_from_pdf(path: &str) -> String { 
-    let bytes = std::fs::read(path).unwrap();
-    pdf_extract::extract_text_from_mem(&bytes).expect("Error extracting text from PDF")
+pub fn extract_from_pdf(path: &str) -> Result<String> { 
+    let bytes = std::fs::read(path)?;
+    let text = pdf_extract::extract_text_from_mem(&bytes)?;
+    Ok(text)
 }
 
-pub fn extract_text(path: &Path) -> Result<String, String> {
+pub fn into_plain_text(path: &Path) -> Result<String> {
 
     match path.extension() {
         Some(ext) => {
             match ext.to_str() {
-                Some("pdf") => Ok(extract_from_pdf(path.to_str().unwrap())),
-                _ => {
-                    let err = format!("Unsupported file extension: {}", ext.to_str().unwrap());
-                    Err(err)
-                }
+                Some("pdf") => extract_from_pdf(path.to_str().unwrap()),
+                _ => Err(anyhow!("Unsupported file extension: {}", ext.to_str().unwrap()))
             }
         },
-        None => {
-            let err = format!("File has no extension: {}", path.to_str().unwrap());
-            Err(err)
-        }
+        None => Err(anyhow!("File has no extension: {}", path.to_str().unwrap()))
     }
 }
 
@@ -31,12 +27,12 @@ mod tests {
 
     #[test]
     fn no_file_extension() {
-        extract_text(Path::new("path/to/file")).expect_err("File has no extension: path/to/file");
+        into_plain_text(Path::new("path/to/file")).expect_err("File has no extension: path/to/file");
     }
 
     #[test]
     fn unsupported_file_extension() {
-        extract_text(Path::new("path/to/file.unsupported")).expect_err("Unsupported file extension: unsupported");
+        into_plain_text(Path::new("path/to/file.unsupported")).expect_err("Unsupported file extension: unsupported");
     }
 
 }
